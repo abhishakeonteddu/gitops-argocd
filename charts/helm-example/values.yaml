@@ -9,7 +9,8 @@ image:
   repository: 145664717845.dkr.ecr.us-east-1.amazonaws.com/gitops-argocd
   version: main-d8be991
 
-imagePullSecrets: []
+imagePullSecrets: 
+   - name: regcred
 nameOverride: ""
 fullnameOverride: ""
 
