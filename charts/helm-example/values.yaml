@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   pullPolicy: IfNotPresent
   repository: nginx
-  version: latest
+  version: main-2befb8c
 
 imagePullSecrets: 
    - name: regcred
