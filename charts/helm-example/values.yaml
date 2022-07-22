@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   pullPolicy: IfNotPresent
   repository: 443247825008.dkr.ecr.us-east-1.amazonaws.com/gitops-argocd
-  version: main-245883e
+  version: main-e2a1da8
 
 imagePullSecrets: 
    - name: regcred
