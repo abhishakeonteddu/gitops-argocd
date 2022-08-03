@@ -45,6 +45,8 @@ jobs:
         repository: abhishakeonteddu/gitopps_repo
         token: ${{ secrets.ACTIONS_TOKEN }}
         path: ./charts/helm-example
+      run: pwd
+
 
     - name: Update Version
       run: |
