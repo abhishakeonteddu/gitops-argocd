@@ -49,6 +49,7 @@ jobs:
     - name: Update Version
       run: |
           pwd
+          cd ./gitopps_repo/charts/helm-example
           ls -lrt
           git_hash=$(git rev-parse --short "$GITHUB_SHA")
           version=$(cat ./gitopps_repo/charts/helm-example/values.yaml | grep version: | awk '{print $2}')
