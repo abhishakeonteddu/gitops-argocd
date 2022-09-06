@@ -53,8 +53,8 @@ spec:
         - name: helm-example
           securityContext:
             {}
-          image: "443247825008.dkr.ecr.us-east-1.amazonaws.com/gitops-argocd:main-522e889"
-          imagePullPolicy: IfNotPresent
+          image: "443247825008.dkr.ecr.us-east-1.amazonaws.com/gitops-argocd:29eaf3517a129e35d11fb87bc08642e5b30cac1b"
+          imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 80
