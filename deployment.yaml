@@ -10,7 +10,8 @@ metadata:
     app.kubernetes.io/instance: tekton-demo
     app.kubernetes.io/version: "2.0.0"
     app.kubernetes.io/managed-by: Helm
-spec:
+    app: example
+spec: 
   type: LoadBalancer
   ports:
     - port: 80
@@ -20,6 +21,7 @@ spec:
   selector:
     app.kubernetes.io/name: helm-example
     app.kubernetes.io/instance: tekton-demo
+    app: example
 ---
 # Source: helm-example/templates/deployment.yaml
 apiVersion: apps/v1
@@ -32,12 +34,14 @@ metadata:
     app.kubernetes.io/instance: tekton-demo
     app.kubernetes.io/version: "2.0.0"
     app.kubernetes.io/managed-by: Helm
+    app: example
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: helm-example
       app.kubernetes.io/instance: tekton-demo
+      app: example
   template:
     metadata:
       labels:
@@ -69,25 +73,3 @@ spec:
               port: http
           resources:
             {}
----
-# Source: helm-example/templates/tests/test-connection.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: "tekton-demo-helm-example-test-connection"
-  labels:
-
-    helm.sh/chart: helm-example-0.1.0
-    app.kubernetes.io/name: helm-example
-    app.kubernetes.io/instance: tekton-demo
-    app.kubernetes.io/version: "2.0.0"
-    app.kubernetes.io/managed-by: Helm
-  annotations:
-    "helm.sh/hook": test-success
-spec:
-  containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args:  ['tekton-demo-helm-example:80']
-  restartPolicy: Never
