@@ -4,7 +4,7 @@ name: build_from_main
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 jobs:
   build:
     name: Build and Pushing the Image
