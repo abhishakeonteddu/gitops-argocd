@@ -58,19 +58,14 @@ jobs:
           git_hash=$(git rev-parse --short "$GITHUB_SHA")
           docker tag $IMAGE_NAME $IMAGE_ID:${GITHUB_REF##*/}-$git_hash 
           docker push $IMAGE_ID:${GITHUB_REF##*/}-$git_hash
-          
-      - name: clone gitops reposity
-        uses: actions/checkout@main
-        with:
-          persist-credentials: false
-          repository: abhishakeonteddu/gitopps_repo
-          token: ${{ secrets.GITHUB_TOKEN }}
-          path: ./gitopps_repo
+
       - name: updated version in values.yaml
         env:
           token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pwd
+          git clone https://abhishakeonteddu:$token@github.com/abhishakeonteddu/gitopps_repo.git
+          git checkout master
           cd ./gitopps_repo/charts/helm-example/
           ls -lrt
           git_hash=$(git rev-parse --short "$GITHUB_SHA")
