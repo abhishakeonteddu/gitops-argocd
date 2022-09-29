@@ -76,4 +76,4 @@ jobs:
           git config user.name abhishakeonteddu
           git config user.email abhishekonteddu@gmail.com
           git commit -am "updated values.yaml with latest version"
-          git push origin main
+          git push 
