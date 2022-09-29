@@ -59,23 +59,25 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID:${GITHUB_REF##*/}-$git_hash 
           docker push $IMAGE_ID:${GITHUB_REF##*/}-$git_hash
 
+      - uses: actions/checkout@v2
+        with:
+          repository: abhishakeonteddu/gitopps_repo
+          path: gitopps_repo         
+          token: ${{secrets.GITHUB_TOKEN}}
+
       - name: updated version in values.yaml
         env:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+          USERNAME: github-actions[bot]       
         run: |
-          pwd
-          git clone https://token:$token@github.com/abhishakeonteddu/gitopps_repo.git
-          git checkout master
-          git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | \
-          xargs -L1 git config --unset-all          
-          cd ./gitopps_repo/charts/helm-example/
-          ls -lrt
-          git_hash=$(git rev-parse --short "$GITHUB_SHA")
-          version=$(cat values.yaml | grep version: | awk '{print $2}')
-          sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" values.yaml
-          cat values.yaml
-          git add .
-          git config user.name token
-          git config user.email abhishekonteddu@gmail.com
-          git commit -am "updated values.yaml with latest version"
-          git push --prune https://token:$token@github.com/abhishakeonteddu/gitopps_repo.git
+           cd ./gitopps_repo/charts/helm-example/
+           ls -lrt
+           git_hash=$(git rev-parse --short "$GITHUB_SHA")
+           version=$(cat values.yaml | grep version: | awk '{print $2}')
+           sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" values.yaml
+           git config --local user.name "github-actions[bot]"
+           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+           git add -A
+           git commit -m "Documentation update"
+           git push https://$USERNAME:$REPO_KEY@github.com/abhishakeonteddu/gitopps_repo.git
+         
