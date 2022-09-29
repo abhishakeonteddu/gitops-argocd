@@ -74,5 +74,7 @@ jobs:
           sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" values.yaml
           cat values.yaml
           git add .
+          git config user.name abhishakeonteddu
+          git config user.email abhishekonteddu@gmail.com
           git commit -am "updated values.yaml with latest version"
           git push --prune https://token:$token@github.com/abhishakeonteddu/gitopps_repo.git
