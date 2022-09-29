@@ -64,7 +64,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pwd
-          git clone https://abhishakeonteddu:$token@github.com/abhishakeonteddu/gitopps_repo.git
+          git clone https://token:$token@github.com/abhishakeonteddu/gitopps_repo.git
           git checkout master
           git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all          
           cd ./gitopps_repo/charts/helm-example/
@@ -74,7 +74,5 @@ jobs:
           sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" values.yaml
           cat values.yaml
           git add .
-          git config user.name abhishakeonteddu
-          git config user.email abhishekonteddu@gmail.com
           git commit -am "updated values.yaml with latest version"
-          git push --prune
+          git push --prune https://token:$token@github.com/abhishakeonteddu/gitopps_repo.git
