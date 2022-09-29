@@ -11,6 +11,7 @@ on:
 
   # Run tests for any PRs.
   pull_request:
+permissions: read-all|write-all
 
 env:
   IMAGE_NAME: gitops-argocd
