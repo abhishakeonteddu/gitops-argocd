@@ -75,6 +75,5 @@ jobs:
           git add .
           git config user.name abhishakeonteddu
           git config user.email abhishekonteddu@gmail.com
-          git config remote.origin.url https://abhishakeonteddu:$token@github.com/abhishakeonteddu/gitopps_repo.git
           git commit -am "updated values.yaml with latest version"
           git push origin main
