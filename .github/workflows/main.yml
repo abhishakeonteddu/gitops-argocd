@@ -5,15 +5,23 @@ name: build_from_main
 on:
   push:
     branches: [ master ]
+   
 jobs:
   build:
     name: Build and Pushing the Image
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
+    - name: clone repo
+      uses: actions/checkout@main
+      with:
+        repository: abhishakeonteddu/gitops-argocd
+        token: ${{ secrets.GITHUB_TOKEN }}
+        path: .
+      
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -38,15 +46,41 @@ jobs:
         echo "Pushing image to ECR..."
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/}-$git_hash
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/}-$git_hash"
-        
-    - name: Update Version
+  
+         
+    - name: clone gitops reposity
+      uses: actions/checkout@main
+      with:
+        persist-credentials: false
+        repository: abhishakeonteddu/gitopps_repo
+        token: ${{ secrets.GITHUB_TOKEN }}
+        path: ./gitopps_repo
+    - name: updated version in values.yaml
+      env:
+         token: ${{ secrets.GITHUB_TOKEN }}
       run: |
+          pwd
+          cd ./gitopps_repo/charts/helm-example/
+          ls -lrt
           git_hash=$(git rev-parse --short "$GITHUB_SHA")
-          version=$(cat ./charts/helm-example/values.yaml | grep version: | awk '{print $2}')
-          sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" ./charts/helm-example/values.yaml
+          version=$(cat values.yaml | grep version: | awk '{print $2}')
+          sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" values.yaml
+          cat values.yaml
+          git add .
+          git config user.name abhishakeonteddu
+          git config user.email abhishekonteddu@gmail.com
+          git config remote.origin.url https://abhishakeonteddu:$token@github.com/abhishakeonteddu/gitopps_repo.git
+          git commit -am "updated values.yaml with latest version"
+          git push origin main
+#    - name: Push changes
+#      uses: ad-m/github-push-action@master
+#      with:
+#        repository: abhishakeonteddu/gitopps_repo
+#        github_token: ${{ secrets.GITHUB_TOKEN }}
+#        branch: ${{ github.ref }}
           
     - name: Commit and push changes
       uses: devops-infra/action-commit-push@v0.3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        commit_message: Version updated
+        commit_message: Version updated in gitops repo
