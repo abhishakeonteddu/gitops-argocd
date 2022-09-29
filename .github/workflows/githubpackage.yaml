@@ -34,7 +34,7 @@ jobs:
 
       - name: Log in to registry
         # This is where you will update the PAT to GITHUB_TOKEN
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+        run: echo "${{ secrets.ACTIONS_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
         
       - name: Get the version
         id: vars
@@ -64,11 +64,11 @@ jobs:
         with:
           repository: abhishakeonteddu/gitopps_repo
           path: gitopps_repo         
-          token: ${{secrets.GITHUB_TOKEN}}
+          token: ${{secrets.ACTIONS_TOKEN}}
 
       - name: updated version in values.yaml
         env:
-          REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+          REPO_KEY: ${{secrets.ACTIONS_TOKEN}}
           USERNAME: github-actions[bot]       
         run: |
            cd ./gitopps_repo/charts/helm-example/
