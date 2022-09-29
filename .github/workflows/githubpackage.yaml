@@ -59,7 +59,7 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID:${GITHUB_REF##*/}-$git_hash 
           docker push $IMAGE_ID:${GITHUB_REF##*/}-$git_hash
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           repository: abhishakeonteddu/gitopps_repo
           path: gitopps_repo         
